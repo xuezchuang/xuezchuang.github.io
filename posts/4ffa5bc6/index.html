@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="hexo-admin是一个很好用hexo管理工具，方便文章的编辑和查看，对插入图片友好。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo-admin安装使用">
+<meta property="og:url" content="http://example.com/posts/4ffa5bc6/index.html">
+<meta property="og:site_name" content="xuezc&#39;s home">
+<meta property="og:description" content="hexo-admin是一个很好用hexo管理工具，方便文章的编辑和查看，对插入图片友好。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/hexo-admin安装使用__0.png">
+<meta property="og:image" content="http://example.com/images/hexo-admin安装使用__1.png">
+<meta property="og:image" content="http://example.com/images/hexo-admin安装使用__2.png">
+<meta property="article:published_time" content="2018-09-04T06:47:00.000Z">
+<meta property="article:modified_time" content="2023-03-27T06:18:53.499Z">
+<meta property="article:author" content="xuezc">
+<meta property="article:tag" content="hexo-admin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/hexo-admin安装使用__0.png">
+
+<link rel="canonical" href="http://example.com/posts/4ffa5bc6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>hexo-admin安装使用 | xuezc's home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xuezc's home</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">首页</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/4ffa5bc6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="xuezc">
+      <meta itemprop="description" content="在这里，你会了解的更多，更透切">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xuezc's home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo-admin安装使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-04 14:47:00" itemprop="dateCreated datePublished" datetime="2018-09-04T14:47:00+08:00">2018-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-27 14:18:53" itemprop="dateModified" datetime="2023-03-27T14:18:53+08:00">2023-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">hexo-admin是一个很好用hexo管理工具，方便文章的编辑和查看，对插入图片友好。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>如果自己编辑 MD 文件的话，确实比较麻烦，你可以用一些 MD 的编辑器，但是在管理 MD 文件上还是操作不方便。<br>这里推荐使用 hexo-admin，而且编辑完之后可以马上看到效果呢。<br>需要说明的是，hexo-admin 管理是本地用的，就是你需要在本地编辑完之后再上传到 github，而不能直接在线编辑保存，因为 github pages 只支持静态页面的。</p>
+<h2 id="安装过程"><a href="#安装过程" class="headerlink" title="安装过程"></a>安装过程</h2><p>安装过程中可能涉及到一些前提或内容，请参考我的另一篇文章  </p>
+<a href="/2018/09/04/Hexo-Github-Pages%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" title="Hexo-Github-Pages安装部署">Hexo-Github-Pages安装部署</a>
+<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>基于版本”hexo”: “^3.7.0”，”hexo-admin”: “^2.3.0”。</p>
+<h3 id="安装-hexo-admin"><a href="#安装-hexo-admin" class="headerlink" title="安装 hexo-admin"></a>安装 hexo-admin</h3><p>cd hexo 目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-admin</span><br></pre></td></tr></table></figure>
+<p>启动 hexo</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>然后打开 <a target="_blank" rel="noopener" href="http://localhost:4000/admin/">http://localhost:4000/admin/</a> 就可以看到管理页面。</p>
+<h3 id="在-hexo-admin-你可以"><a href="#在-hexo-admin-你可以" class="headerlink" title="在 hexo-admin 你可以"></a>在 hexo-admin 你可以</h3><img src="/images/hexo-admin安装使用__0.png" width="600px" height="200px" align=center>
+
+<p>Pages - 新加 page；<br>Posts - 新加或删除 post；双击一个 post，你可以编辑，预览，新增修改 tags、categories，选择发布或不发布；<br>Settings - 一些配置；<br>Deploy - 可以直接部署到 github。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="minimatch"><a href="#minimatch" class="headerlink" title="minimatch"></a>minimatch</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm WARN deprecated minimatch@2.0.10: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue</span><br></pre></td></tr></table></figure>
+<p>当你安装 hexo-admin，执行 npm install –save hexo-admin 时，可能会遇到上面的错误提示，是因为你缺少了一些依赖，执行下面的就好了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install minimatch@&quot;3.0.2&quot;  </span><br><span class="line">npm update -d</span><br></pre></td></tr></table></figure>
+<h4 id="Config-value-“admin-deployCommand”-not-found"><a href="#Config-value-“admin-deployCommand”-not-found" class="headerlink" title="Config value “admin.deployCommand” not found"></a>Config value “admin.deployCommand” not found</h4><p>当你第一次点击 Deploy 按钮时，可能会遇到上述的错误，因为缺少了执行 deploy 的命令，这个问题已经有人提了 issue 并且解决了<br><a target="_blank" rel="noopener" href="https://github.com/jaredly/hexo-admin/issues/70">https://github.com/jaredly/hexo-admin/issues/70</a><br>还需要注意的是，issue 中的脚本只是 hexo deploy，只是做 deploy 操作，但是一般我们的使用习惯是编辑完之后 deploy，所以是要 deploy 最新的，需要把脚本改为即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env sh</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<p>deploy 后你可能看到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Std Error</span><br><span class="line">(node:83411) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.</span><br><span class="line">Warning: Permanently added the RSA host key for IP address &#x27;13.229.188.59&#x27; to the list of known hosts.</span><br><span class="line">Everything up-to-date</span><br></pre></td></tr></table></figure>
+<p>这不是错误，你可以不用管。说明已经 deploy 成功。</p>
+<h4 id="复制图片时的一个小问题"><a href="#复制图片时的一个小问题" class="headerlink" title="复制图片时的一个小问题"></a>复制图片时的一个小问题</h4><p>hexo-admin 编辑时支持直接复制图片（截图）到内容，这点是我比较喜欢的。但是有个问题，复制进去后是加载不出来的，会出现图裂的小图标。<br><img src="/images/hexo-admin安装使用__1.png" width="150px" height="100px" align=center><br>这时你只需要点击别的页面，再点回来就可以看到了，就是“刷”一下就好了，最简单的就是点击右上角打勾的按钮，这个按钮的作用是拼写检查，点一下再点回来，就可以看到你刚复制进去的图片了。  <br><img src="/images/hexo-admin安装使用__2.png" width="350px" height="150px" align=center><br>这大概是因为 hexo-admin 对图片做了延迟加载，具体可以看看这篇文章说的  <br><a target="_blank" rel="noopener" href="https://htchz.me/2018/03/10/Hexo/">https://htchz.me/2018/03/10/Hexo/</a>  </p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/68e727dda16d">https://www.jianshu.com/p/68e727dda16d</a><br><a target="_blank" rel="noopener" href="https://blog.kinpzz.com/2016/12/31/hexo-admin-backend-management/">https://blog.kinpzz.com/2016/12/31/hexo-admin-backend-management/</a><br><a target="_blank" rel="noopener" href="https://github.com/jaredly/hexo-admin">https://github.com/jaredly/hexo-admin</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hexo-admin/" rel="tag"># hexo-admin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/3454819c/" rel="prev" title="Hexo+Github Pages安装部署">
+      <i class="fa fa-chevron-left"></i> Hexo+Github Pages安装部署
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3460d887/" rel="next" title="hexo优化">
+      hexo优化 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">安装过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E6%8F%90"><span class="nav-number">2.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-hexo-admin"><span class="nav-number">2.2.</span> <span class="nav-text">安装 hexo-admin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-hexo-admin-%E4%BD%A0%E5%8F%AF%E4%BB%A5"><span class="nav-number">2.3.</span> <span class="nav-text">在 hexo-admin 你可以</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#minimatch"><span class="nav-number">2.4.1.</span> <span class="nav-text">minimatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Config-value-%E2%80%9Cadmin-deployCommand%E2%80%9D-not-found"><span class="nav-number">2.4.2.</span> <span class="nav-text">Config value “admin.deployCommand” not found</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E5%9B%BE%E7%89%87%E6%97%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.3.</span> <span class="nav-text">复制图片时的一个小问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">xuezc</p>
+  <div class="site-description" itemprop="description">在这里，你会了解的更多，更透切</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xuezc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

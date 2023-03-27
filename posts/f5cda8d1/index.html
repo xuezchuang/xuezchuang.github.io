@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="线程池ThreadPoolExecutor原理分析，源码剖析，帮助大家更加深刻理解线程池。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程池ThreadPoolExecutor实现原理">
+<meta property="og:url" content="http://example.com/posts/f5cda8d1/index.html">
+<meta property="og:site_name" content="xuezc&#39;s home">
+<meta property="og:description" content="线程池ThreadPoolExecutor原理分析，源码剖析，帮助大家更加深刻理解线程池。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__0.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__1.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__2.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__3.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__4.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__5.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__6.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__7.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__8.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__9.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__10.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__11.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__12.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__13.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__14.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__15.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__16.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__17.png">
+<meta property="og:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__18.png">
+<meta property="article:published_time" content="2018-09-30T08:20:00.000Z">
+<meta property="article:modified_time" content="2023-03-27T06:18:53.504Z">
+<meta property="article:author" content="xuezc">
+<meta property="article:tag" content="源码">
+<meta property="article:tag" content="线程池">
+<meta property="article:tag" content="ThreadPoolExecutor">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/线程池ThreadPoolExecutor实现原理__0.png">
+
+<link rel="canonical" href="http://example.com/posts/f5cda8d1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>线程池ThreadPoolExecutor实现原理 | xuezc's home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xuezc's home</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">首页</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/f5cda8d1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="xuezc">
+      <meta itemprop="description" content="在这里，你会了解的更多，更透切">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xuezc's home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线程池ThreadPoolExecutor实现原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-30 16:20:00" itemprop="dateCreated datePublished" datetime="2018-09-30T16:20:00+08:00">2018-09-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-27 14:18:53" itemprop="dateModified" datetime="2023-03-27T14:18:53+08:00">2023-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">线程池ThreadPoolExecutor原理分析，源码剖析，帮助大家更加深刻理解线程池。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>线程池，大家都很熟悉了，我们在平时应用中也用的很多。对线程池，ThreadPoolExecutor 的实现原理有一定理解后，我们可以把它用的更好，对它的参数有更加深刻的理解，甚至我们可以扩展，监控自己的线程池。</p>
+<h2 id="ThreadPoolExecutor实现原理"><a href="#ThreadPoolExecutor实现原理" class="headerlink" title="ThreadPoolExecutor实现原理"></a>ThreadPoolExecutor实现原理</h2><p>本文代码基于JDK1.8</p>
+<h3 id="线程池相关的类的关系"><a href="#线程池相关的类的关系" class="headerlink" title="线程池相关的类的关系"></a>线程池相关的类的关系</h3><p>我们先看看主要的类ThreadPoolExecutor的继承关系</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__0.png" width="550px" height="250px">
+
+<p>平时可能还有用到的 Executors 类，这是一个工具类，提供<br>newFixedThreadPool<br>newCachedThreadPool<br>newScheduledThreadPool<br>等静态方法方便我们创建线程池，最终还是调用 ThreadPoolExecutor 来创建的，一般规范不建议直接使用 Executors 来创建线程池。</p>
+<h3 id="线程池创建的主流程"><a href="#线程池创建的主流程" class="headerlink" title="线程池创建的主流程"></a>线程池创建的主流程</h3><h4 id="线程池的状态"><a href="#线程池的状态" class="headerlink" title="线程池的状态"></a>线程池的状态</h4><p>先看看线程池的状态有哪些，对它有初步的理解</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__1.png" width="550px" height="250px">
+
+<p>线程池的状态和运行的线程数只用了一个 int，其中高3位表示状态，低29位表示线程数。<br>状态表示的意思和状态之间的转换：<br>RUNNING - 可以接受新的任务，及执行队列中的任务<br>SHUTDOWN - 不接受新的任务，但会继续执行队列中的任务<br>STOP - 不接受新的任务，既不会执行队列中的任务，还会中断执行中的任务<br>TIDYING - 全部任务已经终止，且线程数为0<br>TERMINATED - 线程池完全终止  </p>
+<p>RUNNING -&gt; SHUTDOWN - 执行了 shutdown()<br>(RUNNING or SHUTDOWN) -&gt; STOP - 执行了shutdownNow()<br>SHUTDOWN -&gt; TIDYING - 队列和线程为空<br>STOP -&gt; TIDYING - 线程为空<br>TIDYING -&gt; TERMINATED - terminated() 这个勾子方法执行完毕</p>
+<h4 id="线程池的创建"><a href="#线程池的创建" class="headerlink" title="线程池的创建"></a>线程池的创建</h4><p>ThreadPoolExecutor 的构造函数<br><img src="/images/线程池ThreadPoolExecutor实现原理__2.png" width="550px" height="250px"></p>
+<p>线程池的创建只是初始化了一些参数，但理解好这些参数对我们使用线程池很有帮助。<br><strong>corePoolSize</strong> - 核心线程数，除非 allowCoreThreadTimeOut 为 true（默认false），否则即使没有任务，也会维持这么多线程。<br><strong>maximumPoolSize</strong> - 最大线程数，corePoolSize 满了的话，会把任务放到队列，如果队列满了的话（假设队列有界），就会继续创建线程直到 maximumPoolSize，如果超过 maximumPoolSize 则会执行 reject 策略。<br><strong>workQueue</strong> - 用来存放任务的队列，是一个 BlockingQueue，常用的有 LinkedBlockingQueue，ArrayBlockingQueue，SynchronousQueue。<br><strong>keepAliveTime</strong> - 空闲线程的存活时间，如果当前线程数 &gt; corePoolSize，且某个线程空闲了这么多时间（没有获取到任务并运行），那么这个线程会被 remove 掉。<br><strong>unit</strong> - keepAliveTime 的单位，内部会统一转换成 nanos<br><strong>threadFactory</strong> - 用来创建线程的 ThreadFactory，主要用来给线程命名（方便查看日志），设置 daemon，优先级和 group 等，Executors 有 DefaultThreadFactory 这个默认实现。<br><strong>handler</strong> - reject 具体执行策略，reject 的条件上面已经说了，一般内置有以下几个，也可以自己实现<br>CallerRunsPolicy - 不使用线程池的线程执行该任务，直接用当前执行任务（例如 main 线程）<br>AbortPolicy - 直接抛异常<br>DiscardPolicy -  无视不做处理，相当于抛弃掉<br>DiscardOldestPolicy - 将队列头的任务取出来抛弃掉，然后运行当前任务  </p>
+<h4 id="线程池的执行"><a href="#线程池的执行" class="headerlink" title="线程池的执行"></a>线程池的执行</h4><p>一般我们使用 ExecutorService 的 submit 方法来使用线程池执行一个任务，这个方法调用到 AbstractExecutorService </p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__3.png" width="550px" height="250px">
+
+<p>这里我们看到所有 task 无论是 Callable 还是 Runnable 的都会包装成一个 RunnableFuture 也就是 FutureTask，返回给我们。</p>
+<h4 id="execute方法"><a href="#execute方法" class="headerlink" title="execute方法"></a>execute方法</h4><p>重点看 execute 方法，调用了 ThreadPoolExecutor 的 execute </p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__4.png" width="550px" height="250px">
+
+<p>我们分三种情形来看，每个是一个 if 条件：<br>第一，当 workCount &lt; corePoolSize 时，直接创建 worker 线程；<br>第二，如果上面创建失败（可能是线程池正在处于关闭状态，可能是 workCount &gt; corePoolSize 了 - 并发场景），那么这时把任务放入 workQueue 队列；下面的判断是用来防止，线程池不在运行了，就把任务删掉；如果没有线程了就加一个；<br>第三，来到这步说明上面放队列不成功（可能是队列是有界的，满了），那么就继续创建线程来满足，如果这都创建失败（可能是 &gt; maximumPoolSize）就 reject 了；  </p>
+<h4 id="addWorker方法"><a href="#addWorker方法" class="headerlink" title="addWorker方法"></a>addWorker方法</h4><p>继续看看重点的 addWorker 方法，addWorker 分开两部分来看。</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__5.png" width="550px" height="250px">
+
+
+<p>这一步是判断是否可以增加 worker 的重点：<br>第一，首先开始的判断有点奇怪，我也不是很明白，先认为它是如果状态是 SHUTDOWN 则不允许创建线程；<br>第二，下面有个 core 参数，true 使用 corePoolSize，false 使用 maximumPoolSize，我们上面说的 execute 方法第一次就是传 true 的，第二次就传 false。所以这里就是对 size 做判断， 如果 &gt;= size 则返回 false，否则 cas 一下，成功了就 break 执行下面的代码；<br>第三，如果 cas 失败，说明有其他并发竞争，则 cintinue 循环上面的步骤判断。</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__6.png" width="550px" height="250px">
+
+<p>来到这一步说明可以创建 worker 了，这里用了一个全局 lock，来控制创建线程和关闭线程的不能同时做。<br>可以看到步骤就是 new 一个 worker，add 到 workers 里，workers 是一个 HashSet。</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__7.png" width="550px" height="250px">
+
+
+<p>largestPoolSize 来用记录最大的线程数。<br>如果 workerStarted == false（线程池在关闭或创建 worker 时异常），则会 addWorkerFailed 方法。</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__8.png" width="550px" height="250px">
+
+
+<p>主要就是 remove 掉 worker，扣减计数，这里还会调用 tryTerminate 。<br>这个方法会在很多地方用到，它的作用就是防止线程池在终止状态这种情形，去终止线程。</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__9.png" width="550px" height="250px">
+
+<h4 id="Worker是什么"><a href="#Worker是什么" class="headerlink" title="Worker是什么"></a>Worker是什么</h4><p>我们刚刚一直说 worker，那到底 Worker 究竟是什么？我们现在来看看</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__10.png" width="550px" height="250px">
+
+<p>我们可以看到 Worker 是一个 AQS 和 Runnable。<br>为什么是一个 AQS ？<br>我们可以结合注释和代码可以得到，worker 在跑任务的时候会 lock 住，在被中断时会 tryLock，利用上锁这一点来区分这个 worker 是否空闲。<br>Worker 中重写 AQS 的方法。（感概：AQS 真是个简单易用，用于并发控制的好工具！）</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__11.png" width="550px" height="250px">
+
+
+<p>为什么是一个 Runnable ？<br>我们看看 Worker 的构造函数，在创建 Thread 时把自己 this 传到 thread 的参数，说明 worker 的 thread 跑的是自己，这时我们就知道 worker 的入口了。</p>
+<p>Worker 的 run 方法</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__12.png" width="550px" height="250px">
+
+<h4 id="runWorker方法"><a href="#runWorker方法" class="headerlink" title="runWorker方法"></a>runWorker方法</h4><p>重点的 runWorker 方法</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__13.png" width="550px" height="250px">
+
+
+<p>task 可能是传进来的 firstTask 或者 getTask() 获取到的，getTask 也是重点方法，等下讲到；<br>运行 task 时会上锁，锁的作用我刚刚已经说了；<br>如果线程池状态是 STOP 则中断线程；<br>这里放了两个勾子 beforeExecute 和 afterExecute 方法来提供给子类做点事情，一般用于监控或统计线程池的执行情况；<br>执行任务就直接 task.run() 了，还记得我说过这个 task 是一个 FutureTask，如果run 的时候抛出异常，FutureTask 会 catch 掉不会再 throw（如果大家对 FutureTask 不熟悉就先这样理解），所以这里不会进入 catch，也就是不会 throw x 了。如果 task 不像 FutureTask 一样自己处理掉异常，那就会 throw x 了，那么 worker 的线程就会跳出 while 循环，完成使命，结束自己；<br>获取不到 task （task 为null）或者循环过程中异常，最后都会执行 processWorkerExit。</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__14.png" width="550px" height="250px">
+
+
+<p>processWorkerExit 的作用主要就是 remove 掉 worker，那么扣减 workCount 呢？好像没有看到。这里用了 completedAbruptly 这一变量来控制是否在 processWorkerExit 扣减 workCount，因为有可能是在 getTask 已经扣减了，那么在 processWorkerExit 就不用重复扣减。我们结合 runWorker 来看看，分两种情况：<br>1、如果 firstTask 为 null，那么会走到 getTask 方法，如果 getTask 返回 null，那么说明已经是扣减了，这时退出循环，completedAbruptly = false，不用重复扣减。<br>2、如果 firstTask 不为 null<br>（1）执行 firstTask 正常结束，然后循环，走到 getTask，如果返回 task 为 null，那么 completedAbruptly = false，不用重复扣减。<br>（2）执行 firstTask 执行异常，这时 completedAbruptly = true，需要扣减<br>这里我们又看到 tryTerminate 了；<br>下面的判断主要是尝试去增加一个 worker，因为你 remove 掉了一个，如果条件允许，那就加回一个呗。</p>
+<h4 id="getTask方法"><a href="#getTask方法" class="headerlink" title="getTask方法"></a>getTask方法</h4><p>看看重点的 getTask 方法</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__15.png" width="550px" height="250px">
+
+
+<p>在 getTask 时如果发现时线程池在关闭状态，那么就需要停止获取任务了；<br>如果 wc &gt; maximumPoolSize，超过了最大 size 了，就去 cas 扣减 workCount 一下，成功就返回 null；<br>如果 wc &gt; corePoolSize（小于 maximumPoolSize），且 timedOut 的话，说明这个 worker 也有点“多余”，也去扣减 workCount。注意这里对 timedOut 的判断，通过 queue 的定时 poll 方法，时间是线程池的构造参数 keepAliveTime，如果过了这么久都还没获取 task，说明 queue 是空的，有空闲的线程，那就把这个 worker remove 掉吧；<br>如果 wc &lt; corePoolSize 的话，那就调用 queue 的 take 方法一直阻塞获取 task；<br>还有 allowCoreThreadTimeOut 参数，它的意思是忽略对 corePoolSize 的判断。</p>
+<h3 id="关闭线程池"><a href="#关闭线程池" class="headerlink" title="关闭线程池"></a>关闭线程池</h3><p>上面已经把线程的创建和执行基本说得7788了，我们看看关闭线程池是如何做的，其实在上面的很多方法中，都看到很多对如 SHUTDOWN 的判断了。主要有 shutdown 和 shutdownNow 这两个方法。</p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__16.png" width="550px" height="250px">
+
+
+<img src="/images/线程池ThreadPoolExecutor实现原理__17.png" width="550px" height="250px">
+
+<p>这两个方法很相似，从名字来看 shutdown 显得更加的柔性，实际也是。<br>shutdown –<br>不接受新的 task，在运行和已经在队列的 task 可以继续运行；<br>把状态改为 SHUTDOWN；<br>中断空闲 worker，这个在上面已经提到过了，用锁对是否空闲做判断。</p>
+<p>interruptIdleWorkers 打断空闲的线程 </p>
+<img src="/images/线程池ThreadPoolExecutor实现原理__18.png" width="550px" height="250px">
+
+<p>这里还有个 onShutdown 勾子方法。</p>
+<p>shutdownNow –<br>不接受新的 task，中断已经在运行的线程，清空队列；<br>把状态改为 STOP；<br>强制中断所有在运行 worker 的线程；<br>drainQueue，相当于把队列的 task 丢弃掉；</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>线程池ThreadPoolExecutor实现的原理，就是用 Worker 线程不停得取出队列中的任务来执行，根据参数对任务队列和 Workers 做限制，回收，调整。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/87bff5cc8d8c">http://www.jianshu.com/p/87bff5cc8d8c</a><br><a target="_blank" rel="noopener" href="https://javadoop.com/post/java-thread-pool">https://javadoop.com/post/java-thread-pool</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%BA%90%E7%A0%81/" rel="tag"># 源码</a>
+              <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag"># 线程池</a>
+              <a href="/tags/ThreadPoolExecutor/" rel="tag"># ThreadPoolExecutor</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/2fa47d3c/" rel="prev" title="正则回溯分析">
+      <i class="fa fa-chevron-left"></i> 正则回溯分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/68efda44/" rel="next" title="ScheduledThreadPoolExecutor原理 ">
+      ScheduledThreadPoolExecutor原理  <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadPoolExecutor%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">ThreadPoolExecutor实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.1.</span> <span class="nav-text">线程池相关的类的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%88%9B%E5%BB%BA%E7%9A%84%E4%B8%BB%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">线程池创建的主流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">2.2.1.</span> <span class="nav-text">线程池的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-number">2.2.2.</span> <span class="nav-text">线程池的创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="nav-number">2.2.3.</span> <span class="nav-text">线程池的执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#execute%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.4.</span> <span class="nav-text">execute方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addWorker%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.5.</span> <span class="nav-text">addWorker方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Worker%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.2.6.</span> <span class="nav-text">Worker是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runWorker%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.7.</span> <span class="nav-text">runWorker方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getTask%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.8.</span> <span class="nav-text">getTask方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-number">2.3.</span> <span class="nav-text">关闭线程池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">xuezc</p>
+  <div class="site-description" itemprop="description">在这里，你会了解的更多，更透切</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xuezc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="有道云迁移到Bear熊笔记的过程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有道云迁移到Bear熊笔记">
+<meta property="og:url" content="http://example.com/posts/85c9a782/index.html">
+<meta property="og:site_name" content="xuezc&#39;s home">
+<meta property="og:description" content="有道云迁移到Bear熊笔记的过程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-13T05:54:00.000Z">
+<meta property="article:modified_time" content="2023-03-27T06:18:53.501Z">
+<meta property="article:author" content="xuezc">
+<meta property="article:tag" content="bear">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/posts/85c9a782/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>有道云迁移到Bear熊笔记 | xuezc's home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xuezc's home</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">首页</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/85c9a782/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="xuezc">
+      <meta itemprop="description" content="在这里，你会了解的更多，更透切">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xuezc's home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          有道云迁移到Bear熊笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-13 13:54:00" itemprop="dateCreated datePublished" datetime="2021-06-13T13:54:00+08:00">2021-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-27 14:18:53" itemprop="dateModified" datetime="2023-03-27T14:18:53+08:00">2023-03-27</time>
+              </span>
+
+          
+            <div class="post-description">有道云迁移到Bear熊笔记的过程</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="有道云迁移到Bear熊笔记"><a href="#有道云迁移到Bear熊笔记" class="headerlink" title="有道云迁移到Bear熊笔记"></a>有道云迁移到Bear熊笔记</h1><h2 id="为什么要迁移"><a href="#为什么要迁移" class="headerlink" title="为什么要迁移"></a>为什么要迁移</h2><p>一直使用有道云笔记好多年了（大概从2013年开始？），之前还是使用的是简陋的本地笔记，还没有云存储这样的概念，看到有道云笔记之后被它的颜值和各种功能吸引住了。<br>不过随着使用，有道云笔记已经渐渐满足不了我的需求了：</p>
+<ul>
+<li>MD支持不友好<br>一半编辑一半显示，这样极大的影响了编写体验</li>
+<li>内存占用大<br>不知为何，在我的MacBook Pro上有道云笔记的内存占用会持续增长，从几百M到1G到2G，用久了需要command + q关掉再打开，不然会很卡</li>
+<li>卡顿<br>这可能是由上述问题导致的，无论各种操作都会很卡</li>
+<li>搜索功能弱<br>无论是全局搜，还是当前笔记搜，搜索的效果都很差，而且很慢，也没有什么高级搜索的功能</li>
+<li>没有导出功能<br>这点已经被很多人吐槽了，不能方便的把笔记迁移到别的笔记</li>
+<li>同步问题<br>有时候会出现丢失和覆盖，在网络不好时，会不停的产生冲突</li>
+</ul>
+<h2 id="为什么是Bear熊笔记"><a href="#为什么是Bear熊笔记" class="headerlink" title="为什么是Bear熊笔记"></a>为什么是Bear熊笔记</h2><p>在寻找下一个云笔记时，我对比了一些同品：</p>
+<ul>
+<li>为知笔记<br>搜索功能弱<br>MD不支持实时预览</li>
+<li>leanote<br>界面比较丑<br>功能比较弱</li>
+<li>mweb<br>MD不支持实时预览<br>MD的预览很丑</li>
+<li>typora<br>不适合做系统性、总结性的笔记。比较适合做单篇写作</li>
+</ul>
+<p>整体来说，我觉得为知笔记和mweb都不错，推荐。<br>不过，熊笔记在颜值、MD支持和即时预览、搜索等各方面都达到我的要求。<br>PS：熊笔记的存储是放在icloud的，空间容量和付费之间自己考虑。</p>
+<h2 id="迁移过程"><a href="#迁移过程" class="headerlink" title="迁移过程"></a>迁移过程</h2><p>由于有道云笔记不支持批量导出，所以只能曲线救国，这里借助了<a target="_blank" rel="noopener" href="https://github.com/DeppWang/youdaonote-pull">youdaonote-pull</a>，它可以把有道云笔记的格式转化为MD格式。<br>不过有一点需要注意的是，熊笔记是没有“目录”的概念，它是用“标签”取代替。那么如果直接导入转换后的MD文件的话，笔记的目录层次在熊笔记中会全部丢失，这样极不方便对笔记的管理。<br>为了改善这点，我修改了youdaonote-pull的源码，支持了“目录”到“标签”的转换，在<a target="_blank" rel="noopener" href="https://github.com/albenw/youdaonote-pull/tree/feature/bear_support">albenw/youdaonote-pull</a>这里可以看到。</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li><p>填写config.json文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;username&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;password&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;local_dir&quot;</span>: <span class="string">&quot;/Users/alben.wong/Downloads/youdaonote-pull&quot;</span>,</span><br><span class="line"><span class="string">&quot;ydnote_dir&quot;</span>: <span class="string">&quot;经济&amp;投资&quot;</span>,</span><br><span class="line"><span class="string">&quot;smms_secret_token&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;bear_support&quot;</span>: <span class="string">&quot;true&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是，”ydnote_dir”为有道云笔记中”我的文件夹”下的目录。<br>bear_support为”true”</p>
+</li>
+<li><p>运行pull.py<br>注意看一下输出的日志信息，有没有错误或失败的信息。<br>提示，运行前最好检查一下，避免目录名字有空格或其他特殊符号。</p>
+</li>
+<li><p>导入到熊笔记<br>有几点要注意：</p>
+<ul>
+<li>单次只能按照单个直接目录导入<br>即熊笔记不支持子目录的递归导入，如果目录层次比较多和深的话，这个操作是有点麻烦和耗时</li>
+<li>导入时要取消“转义无意义标签”<br>如果勾中，熊笔记会把”#”号进行转义，这样就做不到自动识别”标签”了。不过，这样有个缺点就是，如果笔记的内容有井号的话，就需要导入后手动处理一下</li>
+<li>附件失效问题<br>熊笔记不能自动识别导入后笔记中的附件，这点可以通过“((null))”或者附件名来搜索，进行后期的重新添加附件。不过我个人认为笔记不应该有太多的附件。</li>
+<li>直接目录下的笔记查看问题<br>这个问题是，假设有”a/b/c”这样的目录结构，假设有部分笔记挂在”b”目录下，而你只想查看这部分笔记，在熊笔记中点击”a/b”标签会出现”a/b”下所有的笔记（会递归子目录），那么怎么做到上述这点呢？有两种方法：1、是通过<code>-#xxx/</code>这样的搜索条件去搜（需要点击在直接目录，而且xxx要敲全目录路径）；2、是把这部分笔记迁移到一个新的”目录”去。而我就是采用第二种方法，比较麻烦和耗时。</li>
+</ul>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>当我写完这篇文章时，我的迁移工作已经完成得7788了，统计了一下竟然有1400+得笔记量，而且迁移之前我还在有道云上查阅了一些比较老的笔记，把无记录意义的笔记清理掉，减少一些迁移量。<br>整体来说，这次迁移还算比较顺利，主要工作量在上面已经提到了，有”单次只能按照单个直接目录导入”、”附件失效问题”、”直接目录下的笔记处理问题”，这三点需要一个个来处理，比较耗时。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://github.com/ttttmr/YoudaoNote_to_WizNote">有道云笔记转为知笔记</a></p>
+<p><a target="_blank" rel="noopener" href="https://imshuai.com/emigrate-from-youdao-note">有道云笔记批量迁移到wiz笔记方案——逃离有道云笔记</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bear/" rel="tag"># bear</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/425b6837/" rel="prev" title="聊一下分布式事务">
+      <i class="fa fa-chevron-left"></i> 聊一下分布式事务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/4a17b156/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%89%E9%81%93%E4%BA%91%E8%BF%81%E7%A7%BB%E5%88%B0Bear%E7%86%8A%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">有道云迁移到Bear熊笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%81%E7%A7%BB"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要迁移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AFBear%E7%86%8A%E7%AC%94%E8%AE%B0"><span class="nav-number">1.2.</span> <span class="nav-text">为什么是Bear熊笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">迁移过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.3.1.</span> <span class="nav-text">步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.5.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">xuezc</p>
+  <div class="site-description" itemprop="description">在这里，你会了解的更多，更透切</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xuezc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
