@@ -15,14 +15,15 @@ NexT.utils = {
     document.querySelectorAll('.post-body :not(a) > img, .post-body > img').forEach(element => {
       var $image = $(element);
       var imageLink = $image.attr('data-src') || $image.attr('src');
-      var $imageWrapLink = $image.wrap(`<a class="fancybox fancybox.image" href="${imageLink}" itemscope itemtype="http://schema.org/ImageObject" itemprop="url"></a>`).parent('a');
-      if ($image.is('.post-gallery img')) {
-        $imageWrapLink.attr('data-fancybox', 'gallery').attr('rel', 'gallery');
-      } else if ($image.is('.group-picture img')) {
-        $imageWrapLink.attr('data-fancybox', 'group').attr('rel', 'group');
-      } else {
-        $imageWrapLink.attr('data-fancybox', 'default').attr('rel', 'default');
-      }
+      var $imageWrapLink = $image.wrap(`<a class="fancybox fancybox.image" href="${imageLink}" ></a>`).parent('a');
+      //if ($image.is('.post-gallery img')) {
+      //  $imageWrapLink.attr('data-fancybox', 'gallery').attr('rel', 'gallery');
+      //} else if ($image.is('.group-picture img')) {
+      //  $imageWrapLink.attr('data-fancybox', 'group').attr('rel', 'group');
+		$imageWrapLink.attr('rel', 'group');
+      //} else {
+      //  $imageWrapLink.attr('data-fancybox', 'default').attr('rel', 'default');
+      //}
 
       var imageTitle = $image.attr('title') || $image.attr('alt');
       if (imageTitle) {
