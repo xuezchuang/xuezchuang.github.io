@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="xuezc&#39;s home">
 <meta property="og:description" content="选择物体外线">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/blender_0_0.pn.png">
+<meta property="og:image" content="http://example.com/images/blender_0_0.png">
 <meta property="article:published_time" content="2023-07-07T08:37:00.000Z">
-<meta property="article:modified_time" content="2023-07-11T06:06:21.206Z">
+<meta property="article:modified_time" content="2023-07-11T08:42:52.283Z">
 <meta property="article:author" content="xuezc">
 <meta property="article:tag" content="graph">
 <meta property="article:tag" content="blender">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/blender_0_0.pn.png">
+<meta name="twitter:image" content="http://example.com/images/blender_0_0.png">
 
 <link rel="canonical" href="http://example.com/posts/f7ad6359/">
 
@@ -201,7 +201,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-11 14:06:21" itemprop="dateModified" datetime="2023-07-11T14:06:21+08:00">2023-07-11</time>
+                <time title="修改时间：2023-07-11 16:42:52" itemprop="dateModified" datetime="2023-07-11T16:42:52+08:00">2023-07-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,9 +227,17 @@
       
         <h1 id="bookmark"><a href="#bookmark" class="headerlink" title="bookmark"></a>bookmark</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.gpu_select_pick_load_id 选择对象</span><br><span class="line">2.OVERLAY_outline_draw  绘制outline</span><br><span class="line">3.OVERLAY_shader_outline_prepass</span><br></pre></td></tr></table></figure>
 
-<h1 id="shader"><a href="#shader" class="headerlink" title="shader"></a>shader</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">OVERLAY_shader_outline_prepass(overlay_outline_prepass_mesh)</span><br><span class="line">//可以通过overlay_outline_prepass_mesh名字在overlay_edit_mode_info.hh文件中获取shader的代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="shader"><a href="#shader" class="headerlink" title="shader"></a>shader</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">OVERLAY_shader_outline_prepass(overlay_outline_prepass_mesh)</span><br><span class="line">//可以通过overlay_outline_prepass_mesh名字在overlay_edit_mode_info.hh文件中获取shader的代码</span><br><span class="line">overlay_outline_detect(overlay_outline_detect_frag.glsl) // 绘制outline</span><br></pre></td></tr></table></figure>
+<p>在glsl中关闭aa</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (!doAntiAliasing) &#123;</span><br><span class="line">  lineOutput = vec4(0.0);</span><br><span class="line">  return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="ui-shader数据改变"><a href="#ui-shader数据改变" class="headerlink" title="ui-shader数据改变"></a>ui-shader数据改变</h1><img src="/images/blender_0_0.png">
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.PreferencesSystem_use_overlay_smooth_wire_set //ui改变数据</span><br><span class="line">2.OVERLAY_antialiasing_init </span><br><span class="line">  pd-&gt;antialiasing.enabled //对OVERLAY_Data赋值是否开启aa</span><br><span class="line">3.OVERLAY_outline_cache_init</span><br><span class="line">  //将变量传入uniform.</span><br><span class="line">  DRW_shgroup_uniform_bool_copy(grp, &quot;doAntiAliasing&quot;, pd-&gt;antialiasing.enabled);</span><br><span class="line">4.OVERLAY_outline_draw 绘制outline线</span><br></pre></td></tr></table></figure>
 
-<h1 id="ui-shader数据改变"><a href="#ui-shader数据改变" class="headerlink" title="ui-shader数据改变"></a>ui-shader数据改变</h1><img src="/images/blender_0_0.pn.png">
+<h1 id="draw"><a href="#draw" class="headerlink" title="draw"></a>draw</h1><p>shader的overlay_outline_prepass_mesh绘制选择对象的id<br>shader的overlay_outline_detect绘制outline的颜色和附近的偏移量<br>shader的overlay_antialiasing绘制 混合进行aa操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//1.给outlines_prepass_ps和outlines_detect_ps赋值uniform和shader</span><br><span class="line">OVERLAY_outline_cache_init</span><br><span class="line">//2.outlines_prepass_fb和outlines_resolve_fb是上述两个pass的fbo.</span><br><span class="line">//给fbo创建绑定纹理layout</span><br><span class="line">OVERLAY_outline_init</span><br><span class="line">//3.给antialiasing_ps赋值uniform和shader..此处应该是一个pass可以有多个fbo.</span><br><span class="line">OVERLAY_antialiasing_cache_init</span><br><span class="line">//4.overlay_color_only_fb等fbo创建绑定纹理layout</span><br><span class="line">OVERLAY_antialiasing_init</span><br></pre></td></tr></table></figure>
+<h2 id="overlay-outline-prepass-mesh"><a href="#overlay-outline-prepass-mesh" class="headerlink" title="overlay_outline_prepass_mesh"></a>overlay_outline_prepass_mesh</h2><p>shader:overlay_outline_prepass_vert.glsl</p>
+<h2 id="overlay-outline-detect"><a href="#overlay-outline-detect" class="headerlink" title="overlay_outline_detect"></a>overlay_outline_detect</h2><p>shader:overlay_outline_detect_frag.glsl</p>
+<h2 id="overlay-antialiasing"><a href="#overlay-antialiasing" class="headerlink" title="overlay_antialiasing"></a>overlay_antialiasing</h2><p>shader:overlay_antialiasing_frag.glsl<br>采样器绑定:OVERLAY_antialiasing_cache_init</p>
 
     </div>
 
@@ -314,7 +322,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bookmark"><span class="nav-number">1.</span> <span class="nav-text">bookmark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shader"><span class="nav-number">2.</span> <span class="nav-text">shader</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ui-shader%E6%95%B0%E6%8D%AE%E6%94%B9%E5%8F%98"><span class="nav-number">3.</span> <span class="nav-text">ui-shader数据改变</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bookmark"><span class="nav-number">1.</span> <span class="nav-text">bookmark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shader"><span class="nav-number">2.</span> <span class="nav-text">shader</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ui-shader%E6%95%B0%E6%8D%AE%E6%94%B9%E5%8F%98"><span class="nav-number">3.</span> <span class="nav-text">ui-shader数据改变</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#draw"><span class="nav-number">4.</span> <span class="nav-text">draw</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#overlay-outline-prepass-mesh"><span class="nav-number">4.1.</span> <span class="nav-text">overlay_outline_prepass_mesh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overlay-outline-detect"><span class="nav-number">4.2.</span> <span class="nav-text">overlay_outline_detect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overlay-antialiasing"><span class="nav-number">4.3.</span> <span class="nav-text">overlay_antialiasing</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -328,20 +336,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -361,6 +369,9 @@
       </span>
       <span class="links-of-author-item">
         <a href="/tags/opengl" title="opengl → tags&#x2F;opengl"><i class=" fa-fw"></i>opengl</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/tags/dx12" title="dx12 → tags&#x2F;dx12"><i class=" fa-fw"></i>dx12</a>
       </span>
       <span class="links-of-author-item">
         <a href="/tags/graph" title="graph → tags&#x2F;graph"><i class=" fa-fw"></i>graph</a>
@@ -391,7 +402,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
