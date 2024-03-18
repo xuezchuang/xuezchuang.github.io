@@ -28,12 +28,18 @@
 <meta property="og:site_name" content="xuezc&#39;s home">
 <meta property="og:description" content="ShadowMap, PCF,PCSS解释">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/VSM_1.png">
+<meta property="og:image" content="http://example.com/images/VSM_2.png">
+<meta property="og:image" content="http://example.com/images/VSM_3.png">
+<meta property="og:image" content="http://example.com/images/VSM_5.png">
+<meta property="og:image" content="http://example.com/images/VSM_4.png">
 <meta property="article:published_time" content="2023-05-25T00:56:00.000Z">
-<meta property="article:modified_time" content="2023-05-30T03:39:14.786Z">
+<meta property="article:modified_time" content="2024-03-15T08:04:19.704Z">
 <meta property="article:author" content="xuezc">
 <meta property="article:tag" content="graph">
 <meta property="article:tag" content="opengl">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/VSM_1.png">
 
 <link rel="canonical" href="http://example.com/posts/f84f1a62/">
 
@@ -199,7 +205,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-05-30 11:39:14" itemprop="dateModified" datetime="2023-05-30T11:39:14+08:00">2023-05-30</time>
+                <time title="修改时间：2024-03-15 16:04:19" itemprop="dateModified" datetime="2024-03-15T16:04:19+08:00">2024-03-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -224,10 +230,26 @@
 
       
         <h1 id="Shadow-Mapping"><a href="#Shadow-Mapping" class="headerlink" title="Shadow Mapping"></a>Shadow Mapping</h1><p>Shadow Mapping是上古时期提出的阴影计算的方式.<br>不过多介绍,LearnOpengl中提到的阴影.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/xuezchuang/Variance-Soft-Shadow-Mapping.git" title="查看">代码连接</a></p>
 <h1 id="PCF"><a href="#PCF" class="headerlink" title="PCF"></a>PCF</h1><p>percentage-closer filtering</p>
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> shadow = <span class="number">0.0</span>;</span><br><span class="line"><span class="type">vec2</span> texelSize = <span class="number">1.0</span> / <span class="built_in">textureSize</span>(shadowMap, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> x = <span class="number">-1</span>; x &lt;= <span class="number">1</span>; ++x)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> y = <span class="number">-1</span>; y &lt;= <span class="number">1</span>; ++y)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">float</span> pcfDepth = <span class="built_in">texture</span>(shadowMap, projCoords.xy + <span class="type">vec2</span>(x, y) * texelSize).r; </span><br><span class="line">        shadow += currentDepth - bias &gt; pcfDepth  ? <span class="number">1.0</span> : <span class="number">0.0</span>;        </span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br><span class="line">shadow /= <span class="number">9.0</span>;</span><br></pre></td></tr></table></figure>
 <p>PCF的滤波半径决定了阴影边缘的柔和程度，一般来说滤波半径越大则柔和，相反阴影边缘越锐利.<br>由此启发了PCSS（Percentage Close Soft Shadow）软阴影算法的核心原理，对于那些我们需要实现软阴影的边缘用更大的滤波半径进行滤波，而对于那些不需要太过柔和阴影边缘的地方，则采用更小的滤波半径，这是一种自适应滤波半径的机制。</p>
 <h1 id="PCSS"><a href="#PCSS" class="headerlink" title="PCSS"></a>PCSS</h1><p>PCSS的全称是Percentage Closer Soft Shadows，其灵感来源于PCF。从PCF的结果可以看出，我们在减少阴影锯齿的同时，产生了一种软阴影的效果。实际上在现实生活中，由于绝大部分的光源是面光源，我们见到的更多都是软阴影.<br>PCSS的本质，概括起来就是自适应PCF滤波半径的阴影贴图算法。其关键核心在于如何制定自适应滤波半径的机制。</p>
+<h2 id="step1"><a href="#step1" class="headerlink" title="step1"></a>step1</h2><p> Blocker search: find the average blocker depth<br> 个人理解:随机生成采样点,通过光源等确定一个滤波器大小.对这些点进行采样,然后平均.如果都在阴影,则返回0,如果都不在阴影就是1(没有阴影).其实就是看看是否在半影(Penumbra)内.<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> poissonDiskSamples(projCoords.xy); //sampled from poisson distribution</span><br><span class="line"></span><br><span class="line">float sampleStride = u_LightSize/2.5; </span><br><span class="line">float dBlocker = 0.0;</span><br><span class="line">float sampleSize = 1.0 / u_TextureSize * sampleStride;</span><br><span class="line">int blockerNumSample = BLOCKER_SEARCH_NUM_SAMPLES;</span><br><span class="line"></span><br><span class="line">float border = sampleStride / u_TextureSize;</span><br><span class="line">// just cut out the no padding area according to the sarched area size</span><br><span class="line">if (projCoords.x &lt;= border || projCoords.x &gt;= 0.99f - border) &#123;</span><br><span class="line">	return 1.0;</span><br><span class="line">&#125;</span><br><span class="line">if (projCoords.y &lt;= border || projCoords.y &gt;= 0.99f - border) &#123;</span><br><span class="line">	return 1.0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int count = 0;</span><br><span class="line">for (int i = 0; i &lt; blockerNumSample; ++i) &#123;</span><br><span class="line">	vec2 sampleCoord = poissonDisk[i] * sampleSize + projCoords.xy;</span><br><span class="line">	float closestDepth = texture(u_DepthMap, sampleCoord).r;</span><br><span class="line">	//Only compute average depth of blocker! not the average of the whole filter&#x27;s area!</span><br><span class="line">	if (closestDepth &lt; currentDepth) &#123;</span><br><span class="line">		dBlocker += closestDepth;</span><br><span class="line">		count++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="step2-Penumbra-estimation"><a href="#step2-Penumbra-estimation" class="headerlink" title="step2  Penumbra estimation"></a>step2  Penumbra estimation</h2><p>估计半影大小,已确定最后滤波大小</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// estimation the filter size to control the softness</span><br><span class="line"></span><br><span class="line">poissonDiskSamples(projCoords.xy); // sampled from poisson distribution</span><br><span class="line"></span><br><span class="line">float lightWidth = u_LightSize/2.5;</span><br><span class="line">float wPenumbra = (currentDepth - dBlocker) * lightWidth / dBlocker;</span><br><span class="line"></span><br><span class="line">float filterStride = 5.0;</span><br><span class="line">float filterSize = 1.0 / u_TextureSize * filterStride * wPenumbra;</span><br></pre></td></tr></table></figure>
+<h2 id="step3-Percentage-Closer-Filtering-PCF"><a href="#step3-Percentage-Closer-Filtering-PCF" class="headerlink" title="step3 Percentage Closer Filtering (PCF)"></a>step3 Percentage Closer Filtering (PCF)</h2><h1 id="VSM"><a href="#VSM" class="headerlink" title="VSM"></a>VSM</h1><p>方差阴影映射（Variance Shadow Maps)<br>vsm 使用二阶距来判断深度差,由于使用Chebyshev,会出现light leaking光泄漏问题.就是因为维度不够,所以Moment Shadow Maps使用更高阶可以避免.</p>
+<h2 id="Chebyshev’s-Inequality"><a href="#Chebyshev’s-Inequality" class="headerlink" title="Chebyshev’s Inequality"></a>Chebyshev’s Inequality</h2><img src="/images/VSM_1.png">
+e.g.
+<img src="/images/VSM_2.png">
+
+<h2 id="单边切比雪夫不等式"><a href="#单边切比雪夫不等式" class="headerlink" title="单边切比雪夫不等式"></a>单边切比雪夫不等式</h2><img src="/images/VSM_3.png">
+e.g.
+<img src="/images/VSM_5.png">
+e.g.
+<img src="/images/VSM_4.png">
+
+<h1 id="SAVSM"><a href="#SAVSM" class="headerlink" title="SAVSM"></a>SAVSM</h1><p>Summed Area Variance Shadow Maps<br>vsm直接使用了一个像素的depth和depth*depth,或者在加上blur..而savsm便是算真正的算积分.<br>SA见Summed Area Tables文章.<br>改进的也有在savsm上使用pcss的方法,也就是Penumbra.</p>
 
     </div>
 
@@ -312,7 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shadow-Mapping"><span class="nav-number">1.</span> <span class="nav-text">Shadow Mapping</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PCF"><span class="nav-number">2.</span> <span class="nav-text">PCF</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PCSS"><span class="nav-number">3.</span> <span class="nav-text">PCSS</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shadow-Mapping"><span class="nav-number">1.</span> <span class="nav-text">Shadow Mapping</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PCF"><span class="nav-number">2.</span> <span class="nav-text">PCF</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PCSS"><span class="nav-number">3.</span> <span class="nav-text">PCSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#step1"><span class="nav-number">3.1.</span> <span class="nav-text">step1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step2-Penumbra-estimation"><span class="nav-number">3.2.</span> <span class="nav-text">step2  Penumbra estimation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step3-Percentage-Closer-Filtering-PCF"><span class="nav-number">3.3.</span> <span class="nav-text">step3 Percentage Closer Filtering (PCF)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VSM"><span class="nav-number">4.</span> <span class="nav-text">VSM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chebyshev%E2%80%99s-Inequality"><span class="nav-number">4.1.</span> <span class="nav-text">Chebyshev’s Inequality</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E8%BE%B9%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E4%B8%8D%E7%AD%89%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">单边切比雪夫不等式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SAVSM"><span class="nav-number">5.</span> <span class="nav-text">SAVSM</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -326,7 +348,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
